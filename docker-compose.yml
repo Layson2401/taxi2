@@ -1,0 +1,51 @@
+version: "3.7"
+services:
+  taxi-php:
+    build:
+      context: ./.docker/php
+      dockerfile: Dockerfile
+    image: taxi
+    container_name: taxi-php
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - taxi
+    depends_on:
+      - taxi-mysql
+      - taxi-nginx
+
+  taxi-mysql:
+    image: mysql:8
+    container_name: taxi-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: 'taxi'
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_USER: 'taxi_login'
+      MYSQL_PASSWORD: 'taxi_password'
+    ports:
+    - '3306:3306'
+    volumes:
+      - ./.docker/mysql/data:/var/lib/mysql
+      - ./.docker/mysql/my.cnf:/etc/mysql/my.cnf
+      - ./.docker/mysql-files:/var/lib/mysql-files
+    networks:
+      - taxi
+
+  taxi-nginx:
+    image: nginx
+    container_name: taxi-nginx
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    volumes:
+      - ./taxi_admin:/var/www
+      - .docker/nginx/templates:/etc/nginx/templates
+    networks:
+      - taxi
+
+networks:
+  taxi:
+    driver: bridge
