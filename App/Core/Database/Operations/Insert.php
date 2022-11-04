@@ -13,20 +13,17 @@ class Insert
         $entityProperties = (new \ReflectionClass($entity))->getProperties();
         array_shift($entityProperties);
 
-        $query = "INSERT INTO " . $table . " (";
         $var = "";
+        $values = "";
 
         foreach ($entityProperties as $property) {
-            $var = $var . $property->getName() . ", ";
+            $propertyName = camelToUnderscore($property->getName());
+            $var .= $propertyName . ', ';
+            $values .= ":$propertyName, ";
         }
+        $var = substr($var, 0, -2);
+        $values = substr($values, 0, -2);
 
-        $query = substr($query . camelToUnderscore($var), 0, -2) . ") VALUES (";
-        $var = "";
-
-        foreach ($entityProperties as $property) {
-            $var = $var . ":" . $property->getName() . ", ";
-        }
-
-        return substr($query . $var, 0, -2) . ")";
+        return "INSERT INTO {$table} ({$var}) VALUES ({$values})";
     }
 }

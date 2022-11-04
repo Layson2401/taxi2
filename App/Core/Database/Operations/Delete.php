@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Core\Database\Operations;
+declare(strict_types=1);
 
+namespace App\Core\Database\Operations;
 
 class Delete
 {

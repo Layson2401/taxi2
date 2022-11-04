@@ -1,30 +1,45 @@
 <?php
 
-//declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Core\Database;
 
-use App\Core\Database\Operations\Delete;
-use App\Core\Database\Operations\OperationsFactory;
+use PDO;
+use App\User;
 use App\Entity;
 use App\JourneyType;
-use App\User;
-use PDO;
-use ReflectionProperty;
+use App\Core\Database\Operations\Delete;
+use App\Core\Database\Operations\OperationsFactory;
 
 class EntityManager
 {
+    private const DB_HOST = 'taxi-db';
+    private const DB_NAME = 'taxi';
+    private const DB_USER = 'taxi_login';
+    private const DB_PASS = 'taxi_password';
+
     private PDO $db;
+
+    // todo отдельный файл
     private array $tablesMapping = [
-        User::class => "users",
-        JourneyType::class => "journey_types"
+        User::class => 'users',
+        JourneyType::class => 'journey_types',
     ];
+
+    /**
+     * @var array [:string => value]
+     */
     private array $params = [];
+
     private string $query;
 
     public function __construct()
     {
-        $this->db = new PDO('mysql:host=taxi-db;dbname=taxi', 'taxi_login', 'taxi_password');
+        $this->db = new PDO(
+            'mysql:host=' . self::DB_HOST . ';dbname=' . self::DB_NAME,
+            self::DB_USER,
+            self::DB_PASS,
+        );
     }
 
     public function persist(Entity $entity): void
@@ -40,20 +55,13 @@ class EntityManager
 
             if (is_null($entity->{$propertyName}))
                 continue;
-            if (gettype($entity->{$propertyName}) == "boolean") {
+            if (gettype($entity->{$propertyName}) === 'boolean') {
                 $this->params[$mappingKey] = (int) $entity->{$propertyName};
                 continue;
             }
 
             $this->params[$mappingKey] = $entity->{$propertyName};
         }
-//        $this->params = [
-//            ':login' => $entity->login,
-//            ':password' => $entity->password,
-//            ':email' => $entity->email,
-//            ':is_active' => (int)$entity->isActive,
-//            ':id' => $entity->id
-//        ];
     }
 
     public function delete(Entity $entity): void

@@ -1,9 +1,6 @@
 <?php
 
-
 use App\Core\Routing\Router;
-use App\User;
-use App\UserRepository;
 
 // включаем автозагрузку классов. Нам не нужно указывать require в классах
 require_once './vendor/autoload.php';
@@ -68,8 +65,9 @@ require_once './vendor/autoload.php';
 //2. mysql pdo delete
 //2. mysql pdo update
 
-$router = new Router();
 
+// todo в отдельный файл require, include
+$router = new Router();
 
 $router->get("/users/{id}", "UserController@show");
 $router->get("/users/{id}/edit", "UserController@edit");
