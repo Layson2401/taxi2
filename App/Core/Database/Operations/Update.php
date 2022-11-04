@@ -6,25 +6,20 @@ use App\Entity;
 
 class Update
 {
-
-
     public function build(Entity $entity, string $table): string
     {
         $entityProperties = (new \ReflectionClass($entity))->getProperties();
         array_shift($entityProperties);
 
-        $query = "UPDATE " . $table . " SET ";
-        $var = "";
+        $var = '';
 
         foreach ($entityProperties as $property) {
             $propertyName = $property->getName();
-            $var = $var . camelToUnderscore($propertyName) . '=:' . $propertyName . ', ';
+            $var .= camelToUnderscore($propertyName) . '=:' . $propertyName . ', ';
         }
 
-        return substr($query . $var, 0, -2) . " WHERE id=:id";
+        $var = substr($var, 0, -2);
 
-
+        return "UPDATE {$table} SET {$var} WHERE id=:id";
     }
-//            $this->query = "UPDATE users SET $preparedQueryForUpdate WHERE id=:id";
-
 }
