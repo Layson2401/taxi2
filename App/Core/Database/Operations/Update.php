@@ -17,7 +17,8 @@ class Update
         $var = "";
 
         foreach ($entityProperties as $property) {
-            $var = $var . camelToUnderscore($property->getName()) . '=:' . $property->getName() . ', ';
+            $propertyName = $property->getName();
+            $var = $var . camelToUnderscore($propertyName) . '=:' . $propertyName . ', ';
         }
 
         return substr($query . $var, 0, -2) . " WHERE id=:id";

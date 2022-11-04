@@ -6,11 +6,11 @@
 
 namespace App\Http;
 
-use App\Core\Database\EntityManager;
-use App\Core\Routing\Request;
-use App\Core\View\View;
 use App\User;
 use App\UserRepository;
+use App\Core\View\View;
+use App\Core\Routing\Request;
+use App\Core\Database\EntityManager;
 
 class UserController
 {

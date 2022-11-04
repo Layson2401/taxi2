@@ -17,8 +17,8 @@ class Insert
         $values = "";
 
         foreach ($entityProperties as $property) {
-            $propertyName = camelToUnderscore($property->getName());
-            $var .= $propertyName . ', ';
+            $propertyName = $property->getName();
+            $var .= camelToUnderscore($propertyName) . ', ';
             $values .= ":$propertyName, ";
         }
         $var = substr($var, 0, -2);

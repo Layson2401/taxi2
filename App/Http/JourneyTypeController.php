@@ -2,8 +2,8 @@
 
 namespace App\Http;
 
-use App\Core\View\View;
 use App\JourneyType;
+use App\Core\View\View;
 use App\JourneyTypeRepository;
 
 class JourneyTypeController

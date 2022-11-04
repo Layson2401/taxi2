@@ -12,7 +12,6 @@ class Router
 
     public function dispatch(string $method, string $url)
     {
-
         foreach ($this->routes as $route) {
             if ($route['method'] == $method && $route["url"] === $url) {
 

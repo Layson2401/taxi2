@@ -1,14 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Core\Database;
 
 use PDO;
-use App\User;
 use App\Entity;
-use App\JourneyType;
 use App\Core\Database\Operations\Delete;
+use App\Core\Database\Operations\TableMapper;
 use App\Core\Database\Operations\OperationsFactory;
 
 class EntityManager
@@ -19,12 +18,6 @@ class EntityManager
     private const DB_PASS = 'taxi_password';
 
     private PDO $db;
-
-    // todo отдельный файл
-    private array $tablesMapping = [
-        User::class => 'users',
-        JourneyType::class => 'journey_types',
-    ];
 
     /**
      * @var array [:string => value]
@@ -46,7 +39,7 @@ class EntityManager
     {
         $entityProperties = (new \ReflectionClass($entity))->getProperties();
 
-        $table = $this->tablesMapping[$entity::class];
+        $table = (new TableMapper())->getTable($entity);
         $this->query = (new OperationsFactory())->build($entity, $table);
 
         foreach ($entityProperties as $property) {
@@ -55,8 +48,9 @@ class EntityManager
 
             if (is_null($entity->{$propertyName}))
                 continue;
+
             if (gettype($entity->{$propertyName}) === 'boolean') {
-                $this->params[$mappingKey] = (int) $entity->{$propertyName};
+                $this->params[$mappingKey] = (int)$entity->{$propertyName};
                 continue;
             }
 
@@ -66,7 +60,7 @@ class EntityManager
 
     public function delete(Entity $entity): void
     {
-        $table = $this->tablesMapping[$entity::class];
+        $table = (new TableMapper())->getTable($entity);
         $this->query = (new Delete())->build($table);
         $this->params = [
             ':id' => $entity->id
