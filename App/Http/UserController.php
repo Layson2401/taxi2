@@ -6,6 +6,7 @@
 
 namespace App\Http;
 
+use App\Core\Routing\Response;
 use App\User;
 use App\UserRepository;
 use App\Core\View\View;
@@ -14,7 +15,7 @@ use App\Core\Database\EntityManager;
 
 class UserController
 {
-    public function all() //array
+    public function all(): string|false
     {
         $userRepository = new UserRepository();
         $users = $userRepository->all();
@@ -22,23 +23,21 @@ class UserController
         return View::render('users/index', [
             'users' => $users
         ]);
-
-        //return $users;
     }
 
-    public function create(Request $request)
+    public function create(Request $request): string|false
     {
         return View::render('users/create', []);
     }
 
-    public function add(Request $request)
+    public function add(Request $request): void
     {
         $formData = $request->getParsedBody();
 
         $newUser = new User(
             null,
             $formData['login'],
-            $formData['password'],
+            password_hash($formData['password'], PASSWORD_DEFAULT),
             $formData['email'],
             1,
         );
@@ -48,22 +47,22 @@ class UserController
         $entityManager->persist($newUser);
         $entityManager->run();
 
-        $this->all();
+        (new Response)->redirect('/users');
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request): string|false
     {
         $userRepository = new UserRepository();
         $id = $request->getAttribute('id');
 
-        $user = $userRepository->getById((int) $id);
+        $user = $userRepository->getById((int)$id);
         return View::render('users/update', [
             'user' => $user
         ]);
 
     }
 
-    public function update(Request $request)
+    public function update(Request $request): void
     {
         $id = $request->getAttribute('id');
         $formData = $request->getParsedBody();
@@ -71,7 +70,7 @@ class UserController
         $user = $userRepository->getById($id);
 
         $user->login = $formData["login"];
-        $user->password = $formData["password"];
+        $user->password = password_hash($formData['password'], PASSWORD_DEFAULT);
         $user->email = $formData["email"];
 
 
@@ -80,10 +79,10 @@ class UserController
         $entityManager->persist($user);
         $entityManager->run();
 
-        $this->all();
+        (new Response)->redirect('/users');
     }
 
-    public function delete(Request $request)
+    public function delete(Request $request): void
     {
 
         $id = $request->getAttribute('id');
@@ -95,10 +94,10 @@ class UserController
         $entityManager->delete($user);
         $entityManager->run();
 
-        $this->all();
+        (new Response)->redirect('/users');
     }
 
-    public function show(Request $request)
+    public function show(Request $request): string|false
     {
         $id = $request->getAttribute("id");
 
@@ -108,5 +107,4 @@ class UserController
             'user' => $user
         ]);
     }
-
 }
