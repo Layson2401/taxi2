@@ -41,7 +41,7 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - ./taxi_admin:/var/www
+      - ./taxi2:/var/www
       - .docker/nginx/templates:/etc/nginx/templates
     networks:
       - taxi

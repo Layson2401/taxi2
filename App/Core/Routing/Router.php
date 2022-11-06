@@ -4,23 +4,17 @@ namespace App\Core\Routing;
 
 class Router
 {
-    private $routes = [
-
+    private array $routes = [
     ];
-
-
 
     public function dispatch(string $method, string $url)
     {
         foreach ($this->routes as $route) {
-            if ($route['method'] == $method && $route["url"] === $url) {
+            if ($route['method'] === $method && $route['url'] === $url) {
 
                 $request = new Request($method, $url);
 
                 [$action, $controllerInstance] = $this->buildController($route['action']);
-
-
-
 
                 $controllerInstance->$action($request);
                 exit();
@@ -28,13 +22,11 @@ class Router
         }
 
         foreach ($this->routes as $route) {
-            $expression = (new Expression())->build($route["url"]);
+            $expression = (new Expression())->build($route['url']);
 
-            if ($route['method'] == $method && preg_match($expression, $url)) {
-
-                $request = new Request($method,  $url);
+            if ($route['method'] === $method && preg_match($expression, $url)) {
+                $request = new Request($method, $url);
                 $this->appendRouteParametersToRequest($request, $route);
-
 
                 [$action, $controllerInstance] = $this->buildController($route['action']);
                 $controllerInstance->$action($request);
@@ -42,23 +34,18 @@ class Router
         }
     }
 
-
     private function appendRouteParametersToRequest(Request $request, array $route): void
     {
         (new RouteParametersExtractor())->extract($request, $route);
     }
 
-
     public function get(string $url, string $controller): void
     {
-
         $this->routes[] = [
             'method' => 'GET',
             'url' => $url,
             'action' => $controller
         ];
-
-
     }
 
     public function post(string $url, string $controller)
@@ -68,7 +55,6 @@ class Router
             'url' => $url,
             'action' => $controller
         ];
-
     }
 
     public function delete(string $url, string $controller)

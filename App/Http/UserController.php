@@ -14,8 +14,6 @@ use App\Core\Database\EntityManager;
 
 class UserController
 {
-
-
     public function all() //array
     {
         $userRepository = new UserRepository();

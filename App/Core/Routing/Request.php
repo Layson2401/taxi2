@@ -9,22 +9,18 @@ use Psr\Http\Message\UriInterface;
 
 class Request implements ServerRequestInterface
 {
-
     public array $routeAttributes;
 
     public function __construct(
         public string $method,
         public string $url,
-    )
-    {
+    ) {
     }
-
 
     public function setAttributes(array $attributes): void
     {
         $this->routeAttributes = $attributes;
     }
-
 
     public function getAttribute($name, $default = null)
     {

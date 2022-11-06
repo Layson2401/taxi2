@@ -2,8 +2,6 @@
 
 namespace App\Core\View;
 
-use mysql_xdevapi\Exception;
-
 class View
 {
 
@@ -11,13 +9,11 @@ class View
     {
         header('Content-type: text/html');
         try {
-            $template = $_SERVER['DOCUMENT_ROOT'] . "/App/View/" . $name . ".php";
-
+            $template = $_SERVER['DOCUMENT_ROOT'] . '/App/View/' . $name . '.php';
 
             if (!is_file($template)) {
                 throw new \RuntimeException('Template not found: ' . $template);
             }
-
 
             // define a closure with a scope for the variable extraction
             $result = function ($template, array $data) {
