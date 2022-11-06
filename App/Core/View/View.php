@@ -5,7 +5,7 @@ namespace App\Core\View;
 class View
 {
 
-    public static function render(string $name, array $data)
+    public static function render(string $name, array $data=[])
     {
         header('Content-type: text/html');
         try {

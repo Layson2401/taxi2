@@ -19,5 +19,7 @@ $router->post('/journey_types', 'JourneyTypeController@add');
 $router->delete('/journey_types', 'JourneyTypeController@delete');
 $router->put('/journey_types', 'JourneyTypeController@put');
 
+$router->get('/sign_in', 'UserController@showAuthForm');
+$router->post('/sign_in', 'UserController@authorization');
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

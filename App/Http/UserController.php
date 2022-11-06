@@ -27,7 +27,7 @@ class UserController
 
     public function create(Request $request): string|false
     {
-        return View::render('users/create', []);
+        return View::render('users/create');
     }
 
     public function add(Request $request): void
@@ -106,5 +106,21 @@ class UserController
         return View::render('users/detail', [
             'user' => $user
         ]);
+    }
+
+    public function showAuthForm(): string|false
+    {
+        return View::render('users/sign_in');
+    }
+
+    public function authorization(Request $request)
+    {
+        $parameters = $request->getParsedBody();
+        $user = (new UserRepository())->getByEmail($parameters['email']);
+        if (password_verify($parameters['password'], $user->password)){
+            dd($user);
+        } else {
+            dd('wrong password');
+        }
     }
 }
