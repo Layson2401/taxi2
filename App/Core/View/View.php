@@ -19,6 +19,7 @@ class View
             $result = function ($template, array $data) {
                 //ob_start();
                 extract($data, EXTR_SKIP);
+
                 try {
                     include $template;
                 } catch (\Exception $e) {

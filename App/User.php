@@ -2,7 +2,6 @@
 
 namespace App;
 
-
 // request, response, data mapper, active record
 class User extends Entity
 {

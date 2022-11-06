@@ -5,15 +5,6 @@ use App\Core\Routing\Router;
 // включаем автозагрузку классов. Нам не нужно указывать require в классах
 require_once './vendor/autoload.php';
 
-//$user = new User();
-//$user->name = 'Sergey';
-//$user->age = 17;
-//var_dump($user);
-//echo '<pre>';
-//var_dump($_SERVER);
-//die();
-
-
 //todo
 //описать 5ю - 7ю тезисами работу такси приложения
 //1. Я как пассажир могу зарегистрироваться в приложении для вызова такси
@@ -59,12 +50,6 @@ require_once './vendor/autoload.php';
 
 //$userController = new \App\Http\UserController();
 //$userController->delete(18);
-
-//todo
-//1. mysql pdo insert
-//2. mysql pdo delete
-//2. mysql pdo update
-
 
 // todo в отдельный файл require, include
 include 'routing.php';

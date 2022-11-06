@@ -40,9 +40,8 @@ class UserController
             $formData['login'],
             $formData['password'],
             $formData['email'],
-            1);
-//        $userRepository = new UserRepository();
-//        $userRepository->add($newUser);
+            1,
+        );
 
         $entityManager = new EntityManager();
 
