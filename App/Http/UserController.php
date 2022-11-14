@@ -12,6 +12,7 @@ use App\UserRepository;
 use App\Core\View\View;
 use App\Core\Routing\Request;
 use App\Core\Database\EntityManager;
+use http\Cookie;
 
 class UserController
 {
@@ -117,10 +118,27 @@ class UserController
     {
         $parameters = $request->getParsedBody();
         $user = (new UserRepository())->getByEmail($parameters['email']);
-        if (password_verify($parameters['password'], $user->password)){
-            dd($user);
+
+
+        if (password_verify($parameters['password'], $user->password)) {
+            $key = $this->randomString();
+            setcookie('authorization', $key);
+
+            $user->authKey = $key;
+            $manager = new EntityManager();
+            $manager->persist($user);
         } else {
             dd('wrong password');
         }
+    }
+
+    private function randomString()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randstring = '';
+        for ($i = 0; $i < 30; $i++) {
+            $randstring = $characters[rand(0, strlen($characters))];
+        }
+        return $randstring;
     }
 }

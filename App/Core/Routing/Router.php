@@ -9,6 +9,12 @@ class Router
 
     public function dispatch(string $method, string $url)
     {
+        $authKey = $_COOKIE['auth_key'] ?? null;
+
+        if (!$authKey && $_SERVER['REQUEST_URI'] !== '/sign_in') {
+            (new Response())->redirect('/sign_in');
+        }
+        // проверка роли и редирект на авторизацию
         foreach ($this->routes as $route) {
             if ($route['method'] === $method && $route['url'] === $url) {
 

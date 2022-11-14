@@ -20,8 +20,13 @@ class UserRepository
 
         $stmt = $this->db->query("SELECT * FROM users");
         while ($row = $stmt->fetch(PDO::FETCH_LAZY)) {
-            $user = new User($row['id'], $row['login'], $row['password'], $row['email'], $row['is_active']);
-            $users[] = $user;
+            $users[] = new User(
+                $row['id'],
+                $row['login'],
+                $row['password'],
+                $row['email'],
+                $row['is_active'],
+            );;
         }
 
         return $users;
