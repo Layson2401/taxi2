@@ -1,6 +1,6 @@
 server {
     listen 8080;
-    server_name taxi.local;
+    server_name taxi.local admin.taxi.local;
     index index.php index.html;
     root /var/www;
 

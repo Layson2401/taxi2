@@ -118,9 +118,9 @@ class UserController
         $parameters = $request->getParsedBody();
         $user = (new UserRepository())->getByEmail($parameters['email']);
         if (password_verify($parameters['password'], $user->password)){
-            dd($user);
+            var_dump($user);
         } else {
-            dd('wrong password');
+            var_dump('wrong password');
         }
     }
 }
