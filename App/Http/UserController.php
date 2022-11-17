@@ -9,6 +9,7 @@ namespace App\Http;
 use App\User;
 use App\UserRepository;
 use App\Core\View\View;
+use App\Core\System\Helper;
 use App\Core\Routing\Request;
 use App\Core\Routing\Response;
 use App\Core\Database\EntityManager;
@@ -120,7 +121,7 @@ class UserController
 
 
         if (password_verify($parameters['password'], $user->password)) {
-            $key = $this->randomString();
+            $key = Helper::randomString(30);
             setcookie('auth_key', $key);
             $user->authKey = $key;
 
@@ -135,13 +136,5 @@ class UserController
         }
     }
 
-    private function randomString(): string
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randString = '';
-        for ($i = 0; $i < 30; $i++) {
-            $randString .= $characters[rand(0, strlen($characters) - 1)];
-        }
-        return $randString;
-    }
+
 }

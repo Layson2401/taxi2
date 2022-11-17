@@ -16,7 +16,7 @@ class Update
 
         foreach ($entityProperties as $property) {
             $propertyName = $property->getName();
-            $var .= (new Helper())->camelToUnderscore($propertyName) . '=:' . $propertyName . ', ';
+            $var .= Helper::camelToUnderscore($propertyName) . '=:' . $propertyName . ', ';
         }
 
         $var = substr($var, 0, -2);

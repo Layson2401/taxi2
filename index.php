@@ -16,41 +16,6 @@ require_once './vendor/autoload.php';
 //7. Я как пользователь могу посмотреть статстику
 //8. Я как водитель могу завершить заказ
 
-//todo
-//1. досоздать все таблицы
-//2. тестовые данные минимум 10
-
-
-// php и mysql
-
-//
-//echo "<html> <body>";
-//echo "<h1> TAXI </h1>";
-//echo "<ul>";
-//$stmt = $db->query("SELECT * FROM users");
-//while ($row = $stmt->fetch(PDO::FETCH_LAZY)) {
-//    echo "<li>";
-//    echo "Username: " . $row->login;
-//    echo "</li>";
-//}
-//
-//echo "</ul>";
-//echo "</body> </html>";
-
-//todo
-//1. построить админку
-//2. уметь в браузере увидеть всех пользователей ( url GET /users)
-//3. уметь из браузера создать пользователя ( url POST /users)
-//4. уметь в браузере удалить пользователя ( url DELETE /users/1)
-
-
-//add
-//$user = new User(null, 'Sergey', '12341234', 'sergey@mail.ru', 1);
-
-
-//$userController = new \App\Http\UserController();
-//$userController->delete(18);
-
-$subDomain = (new RoutesOperator())->getSubDomain($_SERVER['HTTP_HOST']);
-$fileName = $subDomain . '_routes.php';
+$subDomain = (new RoutesOperator())->extractSubDomain($_SERVER['HTTP_HOST']);
+$fileName = "routes/{$subDomain}.php";
 include $fileName;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
 use PDO;
@@ -39,22 +41,31 @@ class UserRepository
         $stmt = $this->db->prepare($query);
         $stmt->execute($params);
         $row = $stmt->fetch(PDO::FETCH_LAZY);
-        return new User($row['id'], $row['login'], $row['password'], $row['email'], $row['is_active']);
-    }
 
-    public function getByEmail(string $email)
-    {
-        $query = "SELECT * FROM users WHERE `email` = ?";
-        $params = [$email];
-        $stmt = $this->db->prepare($query);
-        $stmt->execute($params);
-        $row = $stmt->fetch(PDO::FETCH_LAZY);
         return new User(
             $row['id'],
             $row['login'],
             $row['password'],
             $row['email'],
             $row['is_active'],
-            $row['role_id']);
+        );
+    }
+
+    public function getByEmail(string $email): User
+    {
+        $query = "SELECT * FROM users WHERE `email` = ?";
+        $params = [$email];
+        $stmt = $this->db->prepare($query);
+        $stmt->execute($params);
+        $row = $stmt->fetch(PDO::FETCH_LAZY);
+
+        return new User(
+            $row['id'],
+            $row['login'],
+            $row['password'],
+            $row['email'],
+            $row['is_active'],
+            $row['role_id'],
+        );
     }
 }

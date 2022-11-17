@@ -17,7 +17,7 @@ class Insert
 
         foreach ($entityProperties as $property) {
             $propertyName = $property->getName();
-            $var .= (new Helper())->camelToUnderscore($propertyName) . ', ';
+            $var .= Helper::camelToUnderscore($propertyName) . ', ';
             $values .= ":$propertyName, ";
         }
 
