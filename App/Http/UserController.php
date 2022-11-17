@@ -6,13 +6,12 @@
 
 namespace App\Http;
 
-use App\Core\Routing\Response;
 use App\User;
 use App\UserRepository;
 use App\Core\View\View;
 use App\Core\Routing\Request;
+use App\Core\Routing\Response;
 use App\Core\Database\EntityManager;
-use http\Cookie;
 
 class UserController
 {
@@ -114,7 +113,7 @@ class UserController
         return View::render('users/sign_in');
     }
 
-    public function authorization(Request $request)
+    public function authorization(Request $request): void
     {
         $parameters = $request->getParsedBody();
         $user = (new UserRepository())->getByEmail($parameters['email']);
@@ -122,23 +121,27 @@ class UserController
 
         if (password_verify($parameters['password'], $user->password)) {
             $key = $this->randomString();
-            setcookie('authorization', $key);
-
+            setcookie('auth_key', $key);
             $user->authKey = $key;
+
             $manager = new EntityManager();
             $manager->persist($user);
+            $manager->run();
+
+            (new Response())->redirect("/users");
         } else {
-            dd('wrong password');
+            echo "<title> Wrong Password </title>";
+            echo "<h1 align='center'><font face='sans-serif'> WRONG PASSWORD </font></h1>";
         }
     }
 
-    private function randomString()
+    private function randomString(): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randstring = '';
+        $randString = '';
         for ($i = 0; $i < 30; $i++) {
-            $randstring = $characters[rand(0, strlen($characters))];
+            $randString .= $characters[rand(0, strlen($characters) - 1)];
         }
-        return $randstring;
+        return $randString;
     }
 }

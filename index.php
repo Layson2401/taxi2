@@ -1,6 +1,6 @@
 <?php
 
-use App\Core\Routing\Router;
+use App\Core\Routing\RoutesOperator;
 
 // включаем автозагрузку классов. Нам не нужно указывать require в классах
 require_once './vendor/autoload.php';
@@ -51,5 +51,6 @@ require_once './vendor/autoload.php';
 //$userController = new \App\Http\UserController();
 //$userController->delete(18);
 
-// todo в отдельный файл require, include
-include 'routing.php';
+$subDomain = (new RoutesOperator())->getSubDomain($_SERVER['HTTP_HOST']);
+$fileName = $subDomain . '_routes.php';
+include $fileName;

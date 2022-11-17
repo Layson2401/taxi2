@@ -3,6 +3,7 @@
 namespace App\Core\Database\Operations;
 
 use App\Entity;
+use App\Core\System\Helper;
 
 class Insert
 {
@@ -16,7 +17,7 @@ class Insert
 
         foreach ($entityProperties as $property) {
             $propertyName = $property->getName();
-            $var .= camelToUnderscore($propertyName) . ', ';
+            $var .= (new Helper())->camelToUnderscore($propertyName) . ', ';
             $values .= ":$propertyName, ";
         }
 

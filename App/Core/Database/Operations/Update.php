@@ -3,6 +3,7 @@
 namespace App\Core\Database\Operations;
 
 use App\Entity;
+use App\Core\System\Helper;
 
 class Update
 {
@@ -15,7 +16,7 @@ class Update
 
         foreach ($entityProperties as $property) {
             $propertyName = $property->getName();
-            $var .= camelToUnderscore($propertyName) . '=:' . $propertyName . ', ';
+            $var .= (new Helper())->camelToUnderscore($propertyName) . '=:' . $propertyName . ', ';
         }
 
         $var = substr($var, 0, -2);

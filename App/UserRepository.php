@@ -26,7 +26,7 @@ class UserRepository
                 $row['password'],
                 $row['email'],
                 $row['is_active'],
-            );;
+            );
         }
 
         return $users;
@@ -49,10 +49,12 @@ class UserRepository
         $stmt = $this->db->prepare($query);
         $stmt->execute($params);
         $row = $stmt->fetch(PDO::FETCH_LAZY);
-        return new User($row['id'], $row['login'], $row['password'], $row['email'], $row['is_active']);
+        return new User(
+            $row['id'],
+            $row['login'],
+            $row['password'],
+            $row['email'],
+            $row['is_active'],
+            $row['role_id']);
     }
 }
-
-
-// primitives: string, int, decimal, bool
-// complex: object
