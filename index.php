@@ -1,8 +1,8 @@
 <?php
 
-use App\Core\Routing\RoutesOperator;
-
 // включаем автозагрузку классов. Нам не нужно указывать require в классах
+use App\Core\System\App;
+
 require_once './vendor/autoload.php';
 
 //todo
@@ -16,6 +16,10 @@ require_once './vendor/autoload.php';
 //7. Я как пользователь могу посмотреть статстику
 //8. Я как водитель могу завершить заказ
 
-$subDomain = (new RoutesOperator())->extractSubDomain($_SERVER['HTTP_HOST']);
-$fileName = "routes/{$subDomain}.php";
-include $fileName;
+//$subDomain = (new RoutesOperator())->extractSubDomain($_SERVER['HTTP_HOST']);
+//$fileName = "routes/{$subDomain}.php";
+//include $fileName;
+$app = new App();
+
+$router = $app->registerRoutes();
+$app->run($router);
