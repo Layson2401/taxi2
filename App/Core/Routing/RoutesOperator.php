@@ -6,7 +6,7 @@ namespace App\Core\Routing;
 
 class RoutesOperator
 {
-    public function extractSubDomain(string $url): string
+    public static function extractSubDomain(string $url): string
     {
         $domains = explode('.', $url);
 

@@ -23,11 +23,12 @@ class UserRepository
         $stmt = $this->db->query("SELECT * FROM users");
         while ($row = $stmt->fetch(PDO::FETCH_LAZY)) {
             $users[] = new User(
-                $row['id'],
+                (int) $row['id'],
                 $row['login'],
                 $row['password'],
                 $row['email'],
-                $row['is_active'],
+                (bool) $row['is_active'],
+                (int) $row['role_id'],
             );
         }
 
@@ -43,11 +44,12 @@ class UserRepository
         $row = $stmt->fetch(PDO::FETCH_LAZY);
 
         return new User(
-            $row['id'],
+            (int) $row['id'],
             $row['login'],
             $row['password'],
             $row['email'],
-            $row['is_active'],
+            (bool) $row['is_active'],
+            (int) $row['role_id'],
         );
     }
 
@@ -58,14 +60,22 @@ class UserRepository
         $stmt = $this->db->prepare($query);
         $stmt->execute($params);
         $row = $stmt->fetch(PDO::FETCH_LAZY);
-
         return new User(
-            $row['id'],
+            (int) $row['id'],
             $row['login'],
             $row['password'],
             $row['email'],
-            $row['is_active'],
-            $row['role_id'],
+            (bool) $row['is_active'],
+            (int) $row['role_id'],
         );
+    }
+
+    public function getRoleName(int $roleId): string
+    {
+        $query = "SELECT code FROM roles WHERE `id` = {$roleId}";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_LAZY);
+        return $row['code'];
     }
 }

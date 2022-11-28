@@ -2,24 +2,20 @@
 
 use App\Core\Routing\Router;
 
-$router = new Router();
+Router::get('/users/{id}', 'UserController@show');
+Router::get('/users/{id}/edit', 'UserController@edit');
 
-$router->get('/users/{id}', 'UserController@show');
-$router->get('/users/{id}/edit', 'UserController@edit');
+Router::get('/users', 'UserController@all');
+Router::get('/users/create', 'UserController@create');
+Router::post('/users/{id}/update', 'UserController@update');
+Router::post('/users/add', 'UserController@add');
+Router::get('/users/{id}/delete', 'UserController@delete');
+Router::put('/users', 'UserController@put');
 
-$router->get('/users', 'UserController@all');
-$router->get('/users/create', 'UserController@create');
-$router->post('/users/{id}/update', 'UserController@update');
-$router->post('/users/add', 'UserController@add');
-$router->get('/users/{id}/delete', 'UserController@delete');
-$router->put('/users', 'UserController@put');
+Router::get('/journey_types', 'JourneyTypeController@all');
+Router::post('/journey_types', 'JourneyTypeController@add');
+Router::delete('/journey_types', 'JourneyTypeController@delete');
+Router::put('/journey_types', 'JourneyTypeController@put');
 
-$router->get('/journey_types', 'JourneyTypeController@all');
-$router->post('/journey_types', 'JourneyTypeController@add');
-$router->delete('/journey_types', 'JourneyTypeController@delete');
-$router->put('/journey_types', 'JourneyTypeController@put');
-
-$router->get('/sign_in', 'UserController@showAuthForm');
-$router->post('/sign_in', 'UserController@authorization');
-
-$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+Router::get('/sign_in', 'UserController@showAuthForm');
+Router::post('/sign_in', 'UserController@authorization');

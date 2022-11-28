@@ -1,8 +1,8 @@
 <?php include './App/View/layout/header.php' ?>
 
 <div class="container" align="center">
-    <div class="sign_in_form">
-        <form method="post" action="/sign_in">
+    <div class="reg_form">
+        <form method="post" action="/registration">
             <div class="form-group">
                 <label for="email">Почта:</label>
                 <input type="text"
@@ -12,6 +12,14 @@
                        placeholder="Введите почту">
             </div>
             <div class="form-group">
+                <label for="login">Почта:</label>
+                <input type="text"
+                       name="login"
+                       class="form-control"
+                       id="login"
+                       placeholder="Введите логин">
+            </div>
+            <div class="form-group">
                 <label for="password">Пароль:</label>
                 <input type="text"
                        name="password"
@@ -19,15 +27,16 @@
                        id="password"
                        placeholder="Введите пароль">
             </div>
-            <button type="submit" class="btn btn-primary">Войти</button><br>
-            <div>
-                <a href="/registration">Регистрация</a>
+            <div align="left">
+                <input type="radio" name="role_id" value="1" /> Regular <br>
+                <input type="radio" name="role_id" value="2" /> Driver
             </div>
+            <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
         </form>
     </div>
 </div>
 <style>
-    .sign_in_form {
+    .reg_form {
         max-width: 300px;
         margin-top: 100px;
     }

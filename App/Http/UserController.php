@@ -6,6 +6,7 @@
 
 namespace App\Http;
 
+use App\Core\Routing\RoutesOperator;
 use App\User;
 use App\UserRepository;
 use App\Core\View\View;
@@ -26,7 +27,7 @@ class UserController
         ]);
     }
 
-    public function create(Request $request): string|false
+    public function create(): string|false
     {
         return View::render('users/create');
     }
@@ -74,7 +75,6 @@ class UserController
         $user->password = password_hash($formData['password'], PASSWORD_DEFAULT);
         $user->email = $formData["email"];
 
-
         $entityManager = new EntityManager();
 
         $entityManager->persist($user);
@@ -114,13 +114,20 @@ class UserController
         return View::render('users/sign_in');
     }
 
+    public function showRegForm()
+    {
+        return View::render('users/registration');
+    }
+
     public function authorization(Request $request): void
     {
         $parameters = $request->getParsedBody();
         $user = (new UserRepository())->getByEmail($parameters['email']);
 
+        $role = (new UserRepository())->getRoleName($user->roleId);
+        $subDomain = RoutesOperator::extractSubDomain($_SERVER['HTTP_HOST']);
 
-        if (password_verify($parameters['password'], $user->password)) {
+        if (password_verify($parameters['password'], $user->password) && $role == $subDomain) {
             $key = Helper::randomString(30);
             setcookie('auth_key', $key);
             $user->authKey = $key;
@@ -136,5 +143,26 @@ class UserController
         }
     }
 
+    public function registration(Request $request): void
+    {
+        $parameters = $request->getParsedBody();
 
+        $key = Helper::randomString(30);
+        setcookie('auth_key', $key);
+
+        $newUser = new User(
+            null,
+            $parameters['login'],
+            password_hash($parameters['password'], PASSWORD_DEFAULT),
+            $parameters['email'],
+            1,
+            (int) $parameters['role_id'],
+            $key
+        );
+
+        $entityManager = new EntityManager();
+
+        $entityManager->persist($newUser);
+        $entityManager->run();
+    }
 }

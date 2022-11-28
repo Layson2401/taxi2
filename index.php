@@ -16,10 +16,6 @@ require_once './vendor/autoload.php';
 //7. Я как пользователь могу посмотреть статстику
 //8. Я как водитель могу завершить заказ
 
-//$subDomain = (new RoutesOperator())->extractSubDomain($_SERVER['HTTP_HOST']);
-//$fileName = "routes/{$subDomain}.php";
-//include $fileName;
-$app = new App();
+$app = App::getInstance();
 
-$router = $app->registerRoutes();
-$app->run($router);
+$app->run($app->registerRoutes());

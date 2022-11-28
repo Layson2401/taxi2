@@ -2,9 +2,8 @@
 
 use App\Core\Routing\Router;
 
-$router = Router::getInstance();
+Router::get('/sign_in', 'UserController@showAuthForm');
+Router::post('/sign_in', 'UserController@authorization');
 
-$router->get('/sign_in', 'UserController@showAuthForm');
-$router->post('/sign_in', 'UserController@authorization');
-
-//$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+Router::get('/registration', 'UserController@showRegForm');
+Router::post('/registration', 'UserController@registration');
