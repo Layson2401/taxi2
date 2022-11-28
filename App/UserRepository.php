@@ -70,6 +70,7 @@ class UserRepository
         );
     }
 
+    // todo вынести в отдельный репозиторий
     public function getRoleName(int $roleId): string
     {
         $query = "SELECT code FROM roles WHERE `id` = {$roleId}";
