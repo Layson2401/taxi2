@@ -11,9 +11,6 @@ class Router extends Singleton
 
     public function dispatch(string $method, string $url)
     {
-//        echo '<pre>';
-//        var_dump(self::$routes);
-//        echo "</pre>";
         $authKey = $_COOKIE['auth_key'] ?? null;
 
         if (!$authKey &&
@@ -57,8 +54,14 @@ class Router extends Singleton
         self::$routes[] = [
             'method' => 'GET',
             'url' => $url,
-            'action' => $controller
+            'action' => $controller,
         ];
+        // getters
+
+//        $route = new Route($url, 'GET', $controller);
+//        self::$routes[] = $route;
+//
+//        return $route;
     }
 
     public static function post(string $url, string $controller)
@@ -97,6 +100,14 @@ class Router extends Singleton
         $controllerInstance = new $fullControllerName();
 
         return [$action, $controllerInstance];
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
     }
 
 }
