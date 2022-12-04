@@ -127,7 +127,7 @@ class UserController
         $parameters = $request->getParsedBody();
         $user = (new UserRepository())->getByEmail($parameters['email']);
 
-        $role = (new RoleRepository())->getRoleName($user->roleId);
+        $role = (new RoleRepository())->getRoleNameById($user->roleId);
         $subDomain = RoutesOperator::extractSubDomain($_SERVER['HTTP_HOST']);
 
         if (password_verify($parameters['password'], $user->password) && $role == $subDomain) {
