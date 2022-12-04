@@ -11,6 +11,9 @@ class Router extends Singleton
 
     public function dispatch(string $method, string $url)
     {
+//        echo '<pre>';
+//        var_dump(self::$routes);
+//        echo "</pre>";
         $authKey = $_COOKIE['auth_key'] ?? null;
 
         if (!$authKey &&

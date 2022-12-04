@@ -1,12 +1,15 @@
 <?php
 
 
+declare(strict_types=1);
+
 // CQRS - COMMAND QUERY
 // DATA MAPPER (DOCTRINE, CYCLE)
 
 namespace App\Http;
 
 use App\Core\Routing\RoutesOperator;
+use App\RoleRepository;
 use App\User;
 use App\UserRepository;
 use App\Core\View\View;
@@ -41,7 +44,7 @@ class UserController
             $formData['login'],
             password_hash($formData['password'], PASSWORD_DEFAULT),
             $formData['email'],
-            1,
+            true,
         );
 
         $entityManager = new EntityManager();
@@ -124,7 +127,7 @@ class UserController
         $parameters = $request->getParsedBody();
         $user = (new UserRepository())->getByEmail($parameters['email']);
 
-        $role = (new UserRepository())->getRoleName($user->roleId);
+        $role = (new RoleRepository())->getRoleName($user->roleId);
         $subDomain = RoutesOperator::extractSubDomain($_SERVER['HTTP_HOST']);
 
         if (password_verify($parameters['password'], $user->password) && $role == $subDomain) {
@@ -155,7 +158,7 @@ class UserController
             $parameters['login'],
             password_hash($parameters['password'], PASSWORD_DEFAULT),
             $parameters['email'],
-            1,
+            true,
             (int) $parameters['role_id'],
             $key
         );

@@ -5,7 +5,7 @@ namespace App\Core\System;
 use App\Core\Routing\Router;
 use App\Core\Routing\RoutesOperator;
 
-class App extends Singleton
+class App
 {
     public function registerRoutes(): Router
     {

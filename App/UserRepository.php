@@ -69,14 +69,4 @@ class UserRepository
             (int) $row['role_id'],
         );
     }
-
-    // todo вынести в отдельный репозиторий
-    public function getRoleName(int $roleId): string
-    {
-        $query = "SELECT code FROM roles WHERE `id` = {$roleId}";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_LAZY);
-        return $row['code'];
-    }
 }

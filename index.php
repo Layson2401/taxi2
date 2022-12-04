@@ -16,6 +16,6 @@ require_once './vendor/autoload.php';
 //7. Я как пользователь могу посмотреть статстику
 //8. Я как водитель могу завершить заказ
 
-$app = App::getInstance();
+$app = new App();
 
 $app->run($app->registerRoutes());
