@@ -122,6 +122,11 @@ class UserController
         return View::render('users/registration');
     }
 
+    public function showHomePage()
+    {
+        return View::render('users/home_page');
+    }
+
     public function authorization(Request $request): void
     {
         $parameters = $request->getParsedBody();
@@ -139,7 +144,11 @@ class UserController
             $manager->persist($user);
             $manager->run();
 
-            (new Response())->redirect("/users");
+            if ($role == 'regular') {
+                (new Response())->redirect("/home");
+            } else {
+                (new Response())->redirect("/users");
+            }
         } else {
             echo "<title> Wrong Password </title>";
             echo "<h1 align='center'><font face='sans-serif'> WRONG PASSWORD </font></h1>";
@@ -159,7 +168,7 @@ class UserController
             password_hash($parameters['password'], PASSWORD_DEFAULT),
             $parameters['email'],
             true,
-            (int) $parameters['role_id'],
+            (int)$parameters['role_id'],
             $key
         );
 

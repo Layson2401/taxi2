@@ -38,9 +38,8 @@ class UserRepository
     public function getById(int $id): User
     {
         $query = "SELECT * FROM users WHERE `id` = ?";
-        $params = [$id];
         $stmt = $this->db->prepare($query);
-        $stmt->execute($params);
+        $stmt->execute([$id]);
         $row = $stmt->fetch(PDO::FETCH_LAZY);
 
         return new User(
@@ -56,10 +55,10 @@ class UserRepository
     public function getByEmail(string $email): User
     {
         $query = "SELECT * FROM users WHERE `email` = ?";
-        $params = [$email];
         $stmt = $this->db->prepare($query);
-        $stmt->execute($params);
+        $stmt->execute([$email]);
         $row = $stmt->fetch(PDO::FETCH_LAZY);
+
         return new User(
             (int) $row['id'],
             $row['login'],

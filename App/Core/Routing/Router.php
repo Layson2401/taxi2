@@ -2,6 +2,7 @@
 
 namespace App\Core\Routing;
 
+use App\Route;
 use App\Core\System\Singleton;
 
 class Router extends Singleton
@@ -20,11 +21,11 @@ class Router extends Singleton
         }
         // проверка роли и редирект на авторизацию
         foreach (self::$routes as $route) {
-            if ($route['method'] === $method && $route['url'] === $url) {
+            if ($route->getMethod() === $method && $route->getUrl() === $url) {
 
                 $request = new Request($method, $url);
 
-                [$action, $controllerInstance] = $this->buildController($route['action']);
+                [$action, $controllerInstance] = $this->buildController($route->getAction());
 
                 $controllerInstance->$action($request);
                 exit();
@@ -32,65 +33,49 @@ class Router extends Singleton
         }
 
         foreach (self::$routes as $route) {
-            $expression = (new Expression())->build($route['url']);
+            $expression = (new Expression())->build($route->getUrl());
 
-            if ($route['method'] === $method && preg_match($expression, $url)) {
+            if ($route->getMethod() === $method && preg_match($expression, $url)) {
                 $request = new Request($method, $url);
                 $this->appendRouteParametersToRequest($request, $route);
 
-                [$action, $controllerInstance] = $this->buildController($route['action']);
+                [$action, $controllerInstance] = $this->buildController($route->getAction());
                 $controllerInstance->$action($request);
             }
         }
     }
 
-    private function appendRouteParametersToRequest(Request $request, array $route): void
+    private function appendRouteParametersToRequest(Request $request, Route $route): void
     {
         (new RouteParametersExtractor())->extract($request, $route);
     }
 
     public static function get(string $url, string $controller): void
     {
-        self::$routes[] = [
-            'method' => 'GET',
-            'url' => $url,
-            'action' => $controller,
-        ];
-        // getters
-
-//        $route = new Route($url, 'GET', $controller);
-//        self::$routes[] = $route;
-//
-//        return $route;
+        self::$routes[] = new Route($url, 'GET', $controller);
+//        self::$routes[] = [
+//            'method' => 'GET',
+//            'url' => $url,
+//            'action' => $controller,
+//        ];
     }
 
     public static function post(string $url, string $controller)
     {
-        self::$routes[] = [
-            'method' => 'POST',
-            'url' => $url,
-            'action' => $controller
-        ];
+        self::$routes[] = new Route($url, 'POST', $controller);
+
+
     }
 
     public static function delete(string $url, string $controller)
     {
-        self::$routes[] = [
-            'method' => 'DELETE',
-            'url' => $url,
-            'action' => $controller
-        ];
+        self::$routes[] = new Route($url, 'DELETE', $controller);
 
     }
 
     public static function put(string $url, string $controller)
     {
-        self::$routes[] = [
-            'method' => 'PUT',
-            'url' => $url,
-            'action' => $controller
-        ];
-
+        self::$routes[] = new Route($url, 'PUT', $controller);
     }
 
     public function buildController(string $action): array
@@ -101,13 +86,13 @@ class Router extends Singleton
 
         return [$action, $controllerInstance];
     }
-
-    /**
-     * @return string
-     */
-    public function getMethod(): string
-    {
-        return $this->method;
-    }
+//
+//    /**
+//     * @return string
+//     */
+//    public function getMethod(): string
+//    {
+//        return $this->method;
+//    }
 
 }

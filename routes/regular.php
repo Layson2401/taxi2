@@ -7,3 +7,5 @@ Router::post('/sign_in', 'UserController@authorization');
 
 Router::get('/registration', 'UserController@showRegForm');
 Router::post('/registration', 'UserController@registration');
+
+Router::get('/home', 'UserController@showHomePage');
