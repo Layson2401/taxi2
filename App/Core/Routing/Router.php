@@ -28,6 +28,7 @@ class Router extends Singleton
                 [$action, $controllerInstance] = $this->buildController($route->getAction());
 
                 $controllerInstance->$action($request);
+
                 exit();
             }
         }
@@ -63,8 +64,6 @@ class Router extends Singleton
     public static function post(string $url, string $controller)
     {
         self::$routes[] = new Route($url, 'POST', $controller);
-
-
     }
 
     public static function delete(string $url, string $controller)
@@ -86,13 +85,4 @@ class Router extends Singleton
 
         return [$action, $controllerInstance];
     }
-//
-//    /**
-//     * @return string
-//     */
-//    public function getMethod(): string
-//    {
-//        return $this->method;
-//    }
-
 }

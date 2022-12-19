@@ -49,7 +49,7 @@ class EntityManager
             if (is_null($entity->{$propertyName}))
                 continue;
 
-            if (gettype($entity->{$propertyName}) === 'boolean') {
+            if (is_bool($entity->{$propertyName})) {
                 $this->params[$mappingKey] = (int)$entity->{$propertyName};
                 continue;
             }

@@ -8,9 +8,8 @@ declare(strict_types=1);
 
 namespace App\Http;
 
-use App\Core\Routing\RoutesOperator;
-use App\RoleRepository;
 use App\User;
+use App\RoleRepository;
 use App\UserRepository;
 use App\Core\View\View;
 use App\Core\System\Helper;
@@ -133,9 +132,8 @@ class UserController
         $user = (new UserRepository())->getByEmail($parameters['email']);
 
         $role = (new RoleRepository())->getRoleNameById($user->roleId);
-        $subDomain = RoutesOperator::extractSubDomain($_SERVER['HTTP_HOST']);
 
-        if (password_verify($parameters['password'], $user->password) && $role == $subDomain) {
+        if (password_verify($parameters['password'], $user->password)) {
             $key = Helper::randomString(30);
             setcookie('auth_key', $key);
             $user->authKey = $key;
